@@ -1,5 +1,6 @@
 import requests
 from html import unescape
+import random
 
 # gets 10 multichoice any difficulty vehicle questions and the possible answers plus more from open trivia DB using requests.get and stores it all using the variable data
 response = requests.get("https://opentdb.com/api.php?amount=10&category=28&type=multiple")
