@@ -31,28 +31,41 @@ for i,question in enumerate(data):
     wrong_answers.append(wrong)
 
 # for loop that runs for the amount of questions and prints out the questions and answers to them
-for i in range (len(questions)):
+for i in range(len(questions)):
   # generates the number tkhat will be the correct awnser
   correct_ans_number = random.randint(1,4)
   print(questions[i])
   if correct_ans_number == 1:
     print(f"1. {right_answers[i]}\n2. {wrong_answers[(i+1)*3-3]}\n3. {wrong_answers[(i+1)*3-2]}\n4. {wrong_answers[(i+1)*3-1]}")
     users_choice = get_int_input('type in 1,2,3 or 4 to select your answer\n', 'PLEASE TYPE IN 1,2,3 OR 4 FOR YOUR ANSWER', 1, 4)
-    print(users_choice)
-    # prints all the answers for the question with one being the correct one then gets input from user
+    if users_choice == correct_ans_number:
+      print (f"Congradulations {right_answers[i]} was the correct answer!!!\n")
+    else:
+      print (f"Sorry you didn't get it correct. The correct answer was {right_answers[i]}\n")
+    # prints all the answers for the question with one being the correct one then gets input from user and compares it with the anwswer
   elif correct_ans_number == 2:
     print(f"1. {wrong_answers[(i+1)*3-3]}\n2. {right_answers[i]}\n3. {wrong_answers[(i+1)*3-2]}\n4. {wrong_answers[(i+1)*3-1]}")
     users_choice = get_int_input('type in 1,2,3 or 4 to select your answer\n', 'PLEASE TYPE IN 1,2,3 OR 4 FOR YOUR ANSWER', 1, 4)
-    print(users_choice)
-    # prints all the answers for the question with two being the correct one then gets input from user
+    if users_choice == correct_ans_number:
+      print (f"Congradulations {right_answers[i]} was the correct answer!!!\n")
+    else:
+      print (f"Sorry you didn't get it correct. The correct answer was {right_answers[i]}\n")
+    # prints all the answers for the question with two being the correct one then gets input from user and compares it with the anwswer
   elif correct_ans_number == 3:
     print(f"1. {wrong_answers[(i+1)*3-3]}\n2. {wrong_answers[(i+1)*3-2]}\n3. {right_answers[i]}\n4. {wrong_answers[(i+1)*3-1]}")
     users_choice = get_int_input('type in 1,2,3 or 4 to select your answer\n', 'PLEASE TYPE IN 1,2,3 OR 4 FOR YOUR ANSWER', 1, 4)
-    print(users_choice)
-    # prints all the answers for the question with three being the correct one then gets input from user
+    if users_choice == correct_ans_number:
+      print (f"Congradulations {right_answers[i]} was the correct answer!!!\n")
+    else:
+      print (f"Sorry you didn't get it correct. The correct answer was {right_answers[i]}\n")
+    # prints all the answers for the question with three being the correct one then gets input from user and compares it with the anwswer
   else:
     print(f"1. {wrong_answers[(i+1)*3-3]}\n2. {wrong_answers[(i+1)*3-2]}\n3. {wrong_answers[(i+1)*3-1]}\n4. {right_answers[i]}")
     users_choice = get_int_input('type in 1,2,3 or 4 to select your answer\n', 'PLEASE TYPE IN 1,2,3 OR 4 FOR YOUR ANSWER', 1, 4)
-    print(users_choice)
-    # prints all the anwsers for the question with four being the correct one then gets input from user
+    if users_choice == correct_ans_number:
+      print (f"Congradulations {right_answers[i]} was the correct answer!!!\n")
+    else:
+      print (f"Sorry you didn't get it correct. The correct answer was {right_answers[i]}\n")
+    # prints all the anwsers for the question with four being the correct one then gets input from user and compares it with the anwswer
+
     
