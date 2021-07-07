@@ -2,6 +2,7 @@ import requests
 from html import unescape
 import random
 
+quiz_apis = []
 # a function to get a int imput from user between 2 numbers - needs a message and error message lowest int value and highest int value
 def get_int_input(message, error, low, high):
   while True:
@@ -32,19 +33,36 @@ for i,question in enumerate(data):
     wrong_answers.append(wrong)
 
 # for loop that runs for the amount of questions and prints out the questions and answers to them
-
-for i,question in enumerate(question):
+correct_guesses = 0
+for i,question in enumerate(data):
   print(unescape(question["question"]))
+  print("The correct answer is ", unescape(question["correct_answer"]))
   all_answers = []
   all_answers.append(question["correct_answer"])
-  for ans in enumerate(question["incorrect_answers"]):\
+  for ans in question["incorrect_answers"]:
     all_answers.append(ans)
   random.shuffle(all_answers)
   for num, ans in enumerate(all_answers):
-    print(f"{num+1}: {ans}")
+    print(f"{num+1}. {unescape(ans)}")
+  users_choice = get_int_input('type in 1,2,3 or 4 to select your answer\n', 'PLEASE TYPE IN 1,2,3 OR 4 FOR YOUR ANSWER', 1, 4)
+  correct_num = all_answers.index(question['correct_answer']) + 1
+  if users_choice == correct_num:
+    print("you guessed the correct answer\n")
+    correct_guesses += 1
+  elif users_choice != correct_num:
+    print("you guessed the wrong answer. The correct ans was ", unescape(question["correct_answer"]), "\n")
+
+if 10 >= correct_guesses > 7:
+  print
+elif 7 >= correct_guesses >= 4:
+  print
+else:
+  print
 
 
 
-  
+
 
     
+    
+
