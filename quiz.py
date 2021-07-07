@@ -27,7 +27,7 @@ wrong_answers = []
 for i,question in enumerate(data):
   questions.append(unescape(question["question"]))
   right_answers.append(question["correct_answer"])
-  for i,wrong in enumerate(question["incorrect_answers"]):
+  for j,wrong in enumerate(question["incorrect_answers"]):
     wrong_answers.append(wrong)
 
 # for loop that runs for the amount of questions and prints out the questions and answers to them
