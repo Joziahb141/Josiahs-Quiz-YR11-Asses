@@ -51,11 +51,11 @@ for i,question in enumerate(data):
 
 #prints out how well you did plus extra based of your score
 if 10 >= correct_guesses > 7:
-  print(f"well done you got {score*10}% correct. your amazing")
+  print(f"well done you got {correct_guesses*10}% correct. your amazing")
 elif 7 >= correct_guesses >= 4:
-  print(f"congradulations you got {score*10}% correct. good job")
+  print(f"congradulations you got {correct_guesses*10}% correct. good job")
 else:
-  print(f"nice try you got {score*10}% correct. better luck next time")
+  print(f"nice try you got {correct_quesses*10}% correct. better luck next time")
 
 
     
