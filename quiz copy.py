@@ -1,8 +1,64 @@
+
 import requests
 from html import unescape
 import random
 
-quiz_apis = []
+def login(username, password):
+  file = open("user.txt", "r")
+  for i in file:
+    Username,Password = i.split(",")
+    Password = Password.strip()
+
+    if Username == username and Password == password:
+      print (f"********************************************************************************\n********************************************************************************\n*************** WELCOME {username.upper()} TO THE VEHCLE QUIZ ***************** \n********************************************************************************\n*********************************************************************************")
+      break
+
+    else:
+      print("your password or username is not recognised please try again or create a new account")
+      new_username = input ("enter your username\n")
+      new_password = input ("enter your password\n")
+      login(new_username,new_password)
+  file.close()
+
+def register(username, password):
+  file = open("user.txt", "r")
+  valid = True
+  for i in file:
+    Username = i.split(",")
+    if Username[0] == username:
+      valid = False  
+      break
+    
+  if valid == True:
+    file = open("user.txt", "a")
+    file.write(f"\n{username},{password}")
+    print(f"********************************************************************************\n********************************************************************************\n*************** WELCOME {username.upper()} TO THE VEHCLE QUIZ ***************** \n********************************************************************************\n*********************************************************************************")
+    file.close()
+  else:
+    print("someone else already has that username please make another one")
+    new_username = input ("enter your changed username\n")
+    new_password = input ("enter your password\n")
+    register(new_username,new_password)
+
+def sign_in_method():
+  user_option = input("please login or regesiter to continue\nenter L to login or R to register\n")
+  user_option = user_option.upper()
+  if (user_option != "L" and user_option != "R"):
+    print("sorry that was not an option")
+    sign_in_method()
+  if (user_option =="L"):
+    username = input ("enter your username\n")
+    password = input ("enter your password\n")
+    login(username,password,)
+  else:
+    print("Please create a username and password")
+    username = input ("enter your username\n")
+    password = input ("enter your password\n")
+    register(username,password,)
+
+sign_in_method()   
+
+#quiz_apis = []
 # a function to get a int imput from user between 2 numbers - needs a message and error message lowest int value and highest int value
 def get_int_input(message, error, low, high):
   while True:
@@ -52,17 +108,10 @@ for i,question in enumerate(data):
   elif users_choice != correct_num:
     print("you guessed the wrong answer. The correct ans was ", unescape(question["correct_answer"]), "\n")
 
+# a print statment that tells the user how well they did
 if 10 >= correct_guesses > 7:
-  print(f"well done you got {correct_quesses*10}% correct. your amazing")
+  print(f"well done you got {correct_guesses*10}% correct. your amazing")
 elif 7 >= correct_guesses >= 4:
   print(f"congradulations you got {correct_guesses*10}% correct. good job")
 else:
   print(f"nice try you got {correct_guesses*10}% correct. better luck next time")
-
-
-
-
-
-    
-    
-
