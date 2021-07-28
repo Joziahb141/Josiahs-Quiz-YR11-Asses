@@ -3,6 +3,10 @@ import time
 import requests
 from html import unescape
 import random
+import colorama
+
+from colorama import Fore,Back,Style
+colorama.init(autoreset = True)
 
 
 
@@ -19,7 +23,7 @@ def login(username, password):
   if logged_in == True:
     return (username,password,logged_in)
   else:
-    print("your password or username is not recognised please try again or create a new account")
+    print(Fore.RED + Back.RESET + Style.BRIGHT + "your password or username is not recognised please try again or create a new account")
     return (username,password,logged_in)
 
 
@@ -41,7 +45,7 @@ def register(username, password):
     return (username,password,valid)
 
   else:
-    print("someone else already has that username please try again")
+    print(Fore.RED + Back.RESET + Style.BRIGHT + "someone else already has that username please try again")
     return (username,password,valid)
 
 
@@ -50,27 +54,26 @@ def register(username, password):
 def sign_in_method():
   logged_in = False
   while logged_in == False:
-    user_option = input("please login or regesiter to continue\nenter L to login or R to register\n")
+    user_option = input(Back.BLACK + Style.BRIGHT + "please login or regesiter to continue\nenter L to login or R to register\n")
     user_option = user_option.upper()
     if user_option != "L" and user_option != "R":
-      print("sorry that was not an option")
-      sign_in_method()
-      return
-    if (user_option =="L"):
-      username = input ("enter your username\n")
-      password = input ("enter your password\n")
-      u,p,logged_in = login(username,password)
+      print(Fore.RED + Back.RESET + Style.BRIGHT + "sorry that was not an option")
     else:
-      print("Please create a username and password")
-      username = input ("enter your username\n")
-      password = input ("enter your password\n")
-      u,p,logged_in = register(username,password)
-    if logged_in == True:
-      return(u,p,logged_in)
+      if (user_option =="L"):
+        username = input (Back.BLACK + Style.BRIGHT + "enter your username\n")
+        password = input (Back.BLACK + Style.BRIGHT + "enter your password\n")
+        u,p,logged_in = login(username,password)
+      else:
+        print("Please create a username and password")
+        username = input (Back.BLACK + Style.BRIGHT + "enter your username\n")
+        password = input (Back.BLACK + Style.BRIGHT + "enter your password\n")
+        u,p,logged_in = register(username,password)
+  if logged_in == True:
+    return(u,p,logged_in)
       
-username, password, logged_in = sign_in_method()  
+username, password, logged_in = sign_in_method()
 
-print(f"********************************************************************************\n********************************************************************************\n*************** WELCOME {username.upper()} TO THE VEHCLE QUIZ ***************** \n********************************************************************************\n*********************************************************************************")
+print(Fore.YELLOW + Back.RESET + Style.BRIGHT + "********************************************************************************\n********************************************************************************\n***************", Fore.RED + Style.BRIGHT + f" WELCOME {username.upper()} TO THE VEHCLE QUIZ *****************", Fore.YELLOW  + Style.BRIGHT + " \n********************************************************************************\n*********************************************************************************")
 
 # a function to get a int imput from user between 2 numbers - needs a message and error message lowest int value and highest int value
 def get_int_input(message, error, low, high):
@@ -118,8 +121,8 @@ if logged_in == True:
     question_num += 1
 
     # prints the question out
-    print("question_num",unescape(question["question"]))
-    print("The correct answer is ", unescape(question["correct_answer"]))
+    print(Fore.YELLOW + Style.BRIGHT + f"{question_num}.", Fore.MAGENTA + Style.BRIGHT + unescape(question["question"]))
+    # print("The correct answer is ", unescape(question["correct_answer"]))
     all_answers = []
     all_answers.append(question["correct_answer"])
     for ans in question["incorrect_answers"]:
@@ -128,16 +131,16 @@ if logged_in == True:
     for num, ans in enumerate(all_answers):
 
       # prints out all the possible answers for question and the number for the answer they represent
-      print(f"{num+1}. {unescape(ans)}")
-    users_choice = get_int_input('type in 1,2,3 or 4 to select your answer\n', 'PLEASE TYPE IN 1,2,3 OR 4 FOR YOUR ANSWER', 1, 4) # gets users input
+      print(Fore.CYAN+ Style.BRIGHT + f"{num+1}.", Fore.YELLOW + Style.BRIGHT + unescape(ans))
+    users_choice = get_int_input(Fore.MAGENTA + Style.BRIGHT + 'type in 1,2,3 or 4 to select your answer\n', Fore.MAGENTA + Style.BRIGHT + 'PLEASE TYPE IN 1,2,3 OR 4 FOR YOUR ANSWER', 1, len(all_answers)) # gets users input
     correct_num = all_answers.index(question['correct_answer']) + 1 # finds correct answer number
 
     # cheaks if user geussed the correct number and tells them if they did or didn't
     if users_choice == correct_num:
-      print("you guessed the correct answer\n")
+      print(Fore.GREEN + Style.BRIGHT +"you guessed the correct answer\n")
       correct_guesses += 1
     elif users_choice != correct_num:
-      print("you guessed the wrong answer. The correct ans was ", unescape(question["correct_answer"]), "\n")
+      print(Fore.RED + Style.BRIGHT + "you guessed the wrong answer. The correct ans was ", Fore.RED + Style.BRIGHT +  unescape(question["correct_answer"]), "\n")
 
 
 
@@ -145,7 +148,7 @@ if logged_in == True:
   end_time = time.time()
   duration = end_time - start_time
   duration = round(duration,1)
-  print(f"you finished in {duration} seconds")
+  print(Fore.YELLOW + Style.BRIGHT + f"you finished in {duration} seconds")
 
 
 
@@ -153,11 +156,11 @@ if logged_in == True:
   correct_percent = correct_guesses * (100/question_num)
   # a print statment that tells the user how well they did
   if 10 >= correct_guesses > 7:
-    print(f"well done you got {correct_percent}% correct. your amazing")
+    print(Fore.GREEN + Style.BRIGHT + f"well done you got {correct_percent}% correct. your amazing")
   elif 7 >= correct_guesses >= 4:
-    print(f"congradulations you got {correct_percent}% correct. good job")
+    print(Fore.CYAN + Style.NORMAL + f"congradulations you got {correct_percent}% correct. good job")
   else:
-    print(f"nice try you got {correct_percent}% correct. better luck next time")
+    print(Fore.RED + Style.DIM + f"nice try you got {correct_percent}% correct. better luck next time")
 
 
 
@@ -172,15 +175,28 @@ for line in file:
     # cheaks to see if the users score is better than there highscore
     if float(best_percent) < correct_percent:
       new_line_info = line.replace(best_percent,f"{correct_percent}").replace(best_time,f"{duration}\n")
+      print(Fore.GREEN + Style.BRIGHT + "You bet your high score")
       new_file_info = f"{new_file_info}{new_line_info}"
     elif float(best_percent) == correct_percent and float(best_time) > duration:
       new_line_info = line.replace(best_percent,f"{correct_percent}").replace(best_time,f"{duration}\n")
+      print(Fore.GREEN + Style.BRIGHT + "You bet your high score")
       new_file_info = f"{new_file_info}{new_line_info}"
     else:
-      continue
+      new_file_info = f"{new_file_info}{line}"
   else:
     new_file_info = f"{new_file_info}{line}"
+file.close()
 
+new_file_info = new_file_info.split("\n")
+file_info = ""
+for i in new_file_info:
+  if i == new_file_info[0]:
+    file_info = i
+  else:
+    new_info = f"{file_info}\n{i}"
+    file_info = new_info
+
+    
 file = open("user.txt","w")
-file.write(new_file_info)
+file.write(file_info)
 file.close()
