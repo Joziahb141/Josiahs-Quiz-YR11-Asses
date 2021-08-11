@@ -1,2 +1,1 @@
 
-$2b$12$HrN5.DXUYqoXDVi1UCII5uEerEnDxTqbUp1.txcIUQfbwmiUn1xB2,$2b$12$HOK36tx8KYwVEHWJb9XHJujIOlmgXFQkiGiVuMyQQtQqw3kdGcnsS,easy:0.0:999999.0 medium:0.0:999999.9 hard:0.0:999999.9 any:0.0:999999.9,
