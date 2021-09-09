@@ -139,7 +139,7 @@ def print_answers_in_random_order(correct_ans:str,incorrect_answers:list) ->list
   return questions_answers,int(questions_answers.index(correct_ans))+1
 
 def get_api_info(difficulty:int) ->list:
-  ''' gets the quiz info/data for the quiz the want to try'''
+  ''' gets the quiz info/data for the quiz the want to try from https://opentdb.com/'''
   if difficulty == 1:
     easy_response = requests.get('https://opentdb.com/api.php?amount=10&category=28&difficulty=easy')
     return easy_response.json()['results']
