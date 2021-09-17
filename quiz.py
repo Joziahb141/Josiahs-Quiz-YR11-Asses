@@ -32,16 +32,19 @@ def decrypt_file(file_directory:str,key):
   with open(file_directory,"w") as file:
     file.write(decoded)
 
-def sign_in_choice() ->bool :
+def sign_in_choice() ->bool and str:
   ''' gets user to choose a sign in method'''
   valid = False
   while valid == False:
-    user_option = input(Back.BLACK + Style.BRIGHT + "please login or regesiter to continue\nenter L to login or R to register\n")
+    user_option = input(Back.BLACK + Style.BRIGHT + "please login or regesiter or cintinue as a guest\nenter L to login, R to register or G for quest\n")
     user_option = user_option.upper()
-    if user_option != "L" and user_option != "R":
+    if user_option != "L" and user_option != "R" and user_option != "G":
       print(Fore.RED + Back.RESET + Style.BRIGHT + "sorry that was not an option")
     else:
-      valid,user,pswd = sign_in(user_option.upper())
+      if user_option == "L" or user_option == "R":
+        valid,user,pswd = sign_in(user_option.upper())
+      else:
+        return False,False
   return user,pswd
 
 def sign_in(sign_in_method:str) ->bool:
@@ -62,15 +65,19 @@ def login(username:str,password:str) ->bool:
     print(Fore.RED + Back.RESET + Style.BRIGHT + "your password or username is not recognised please try again or create a new account")
     return False 
 
+
+
 def register(username:str,password:str) ->bool:
   ''' register user if they have entered new info '''
+
   if not check_file(username,password):
     write_hash(make_hash(username),make_hash(password))
     print(Fore.YELLOW + Style.BRIGHT + "********************************************************************************\n********************************************************************************\n***************", Fore.RED + Style.BRIGHT + f" WELCOME {username.upper()} TO THE VEHCLE QUIZ ", Fore.YELLOW  + Style.BRIGHT + "***************** \n********************************************************************************\n*********************************************************************************")
     return True
   else:
     print(Fore.RED + Back.RESET + Style.BRIGHT + "the info you entered is simular to another user please change your username and password")
-    return False    
+    return False
+            
 
 def make_hash(info:str) ->str:
   ''' takes a string a makes it into a hash'''
@@ -78,18 +85,22 @@ def make_hash(info:str) ->str:
   
 def write_hash(username:str,password:str):
   ''' writes the new hashes in the database '''
-  with open("Josiahs-Quiz-YR11-Asses/user_info.txt","a") as file:
-    file.write(f"\n{username},{password},easy:0.0:999999.0 medium:0.0:999999.9 hard:0.0:999999.9 any:0.0:999999.9,")
+  with open("user.txt","a") as file:
+    file.write(f"{username},{password},easy:0.0:999999.0 medium:0.0:999999.9 hard:0.0:999999.9 any:0.0:999999.9,\n")
 
 def check_file(username:str,password:str) ->bool:
   ''' cheak if the info entered matches any in the database '''
-  with open("Josiahs-Quiz-YR11-Asses/user_info.txt","r") as file:
-    for line in file:
-      user,pswd,best_scores,end_of_line = line.split(",")
-      if check_hash(username,user) and check_hash(password,pswd):
-        return True
-        break
-  return False
+  try:
+    with open("user.txt","r") as file:
+      for line in file:
+        user,pswd,best_scores,end_of_line = line.split(",")
+        if check_hash(username,user) and check_hash(password,pswd):
+          return True
+          break
+    return False
+  except:
+    print(Fore.RED + Style.BRIGHT + "There was a problem in the loggin process please try again")
+    return False
         
 def check_hash(info:str,hash:str) ->bool:
   ''' cheaks to see if the info entered matches the hash and returns the result '''
@@ -123,7 +134,7 @@ def print_question(question:str,question_num:int):
   ''' prints out the question '''
   print(Fore.CYAN + Style.BRIGHT + f"{question_num}.", Fore.YELLOW + Style.BRIGHT + question)
 
-def print_answers_in_random_order(correct_ans:str,incorrect_answers:list) ->list:
+def print_answers_in_random_order(correct_ans:str,incorrect_answers:list) ->list and int:
   ''' gets the answers and prints them out in a random order '''
   questions_answers =[]
   # added the correct answer to the possible answers
@@ -139,7 +150,7 @@ def print_answers_in_random_order(correct_ans:str,incorrect_answers:list) ->list
   return questions_answers,int(questions_answers.index(correct_ans))+1
 
 def get_api_info(difficulty:int) ->list:
-  ''' gets the quiz info/data for the quiz the want to try from https://opentdb.com/'''
+  ''' gets the quiz info/data for the quiz the want to try'''
   if difficulty == 1:
     easy_response = requests.get('https://opentdb.com/api.php?amount=10&category=28&difficulty=easy')
     return easy_response.json()['results']
@@ -159,7 +170,7 @@ def run_quiz():
   # resets prints staments colours back to default after each statment
   colorama.init(autoreset=True)
   # decrypts the file with the users info will need to be ignored first time codes run
-  #decrypt_file("Josiahs-Quiz-YR11-Asses/user_info.txt",get_key())
+  # decrypt_file("user.txt",get_key())
   # welcomes user to the quiz and tells them whats going to happen
   print(Back.BLACK + Fore.RED + Style.BRIGHT + "welcome. please sign in to continue to the quiz on vehicles")
   # gets the user to sign in and saves there user and pswd to find there account later
@@ -191,9 +202,10 @@ def run_quiz():
   # tells user how well they did
   give_results(time_taken, percent_correct)
   # cheaks if user beat there highscore and changes it if required
-  change_file(user,pswd,percent_correct,time_taken,quiz_difficulty - 1)
-  # encrypts the file
-  encrypt_file("Josiahs-Quiz-YR11-Asses/user_info.txt",get_key())
+  if user != False and pswd !=False:
+    change_file(user,pswd,percent_correct,time_taken,quiz_difficulty - 1)
+  # encrypts the file 
+  # encrypt_file("user.txt",get_key())
 
 def get_duration(start_time:float,end_time:float) ->float:
   ''' a function to work out the duration of a task'''
@@ -232,7 +244,6 @@ def check_highscore(best_percent:float,new_percent:float,best_time:float,new_tim
     line_info = replace_info(line_info,old_score_info,score_info)
     return line_info
   else:
-    print(Fore.CYAN + Style.BRIGHT + f"you didn't beat your highscore of {best_percent}% in {best_time} seconds")
     return line_info
 
 def replace_info(old_info:str,thing_to_replace:str,replacement:str) ->str:
@@ -248,7 +259,7 @@ def check_user_info_match(username:str,password:str,file_username:str,file_passw
 
 def change_file(username:str,password:str,users_percent:float,users_time:float,quiz_difficulty:int):
   ''' rerites the file with changes to users highscore if required '''
-  with open("Josiahs-Quiz-YR11-Asses/user_info.txt","r") as file:
+  with open("user.txt","r") as file:
     new_file_info = ""
     # cheaks each line looking for the user
     for line in file:
@@ -266,7 +277,8 @@ def change_file(username:str,password:str,users_percent:float,users_time:float,q
         # adds the new line to the info to replace the file with
         new_file_info = f"{new_file_info}{line}"
   # writes the new file info to the file
-  with open("Josiahs-Quiz-YR11-Asses/user_info.txt","w") as file:
+  with open("user.txt","w") as file:
     file.write(new_file_info)
+
 
 run_quiz()
