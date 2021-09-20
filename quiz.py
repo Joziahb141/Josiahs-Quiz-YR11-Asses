@@ -98,8 +98,8 @@ def check_file(username:str,password:str) ->bool:
           return True
           break
     return False
-  except:
-    print(Fore.RED + Style.BRIGHT + "There was a problem in the loggin process please try again")
+  except ValueError:
+    # print(Fore.RED + Style.BRIGHT + "There was a problem in the loggin process please try again")
     return False
         
 def check_hash(info:str,hash:str) ->bool:
